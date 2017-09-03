@@ -1,0 +1,71 @@
+DROP SCHEMA IF EXISTS mediatek;
+CREATE SCHEMA mediatek;
+USE mediatek;
+
+DROP TABLE IF EXISTS Bok;
+DROP TABLE IF EXISTS Film;
+DROP TABLE IF EXISTS Magasin;
+DROP TABLE IF EXISTS Fag;
+DROP TABLE IF EXISTS Semestertabell;
+DROP TABLE IF EXISTS LestBok;
+DROP TABLE IF EXISTS Skolebok_HSN;
+
+CREATE TABLE Bok (
+ISBN CHAR (13),
+Tittel VARCHAR (50),
+Opplag CHAR (2),
+Forfatter VARCHAR (70),
+Forlag VARCHAR (70),
+AntallSider CHAR (4),
+Omslag VARCHAR (10),
+Sjanger VARCHAR (30),
+CONSTRAINT BokPK PRIMARY KEY (ISBN)
+);
+
+CREATE TABLE Film (
+Tittel VARCHAR (50),
+Aldersgrense CHAR (2),
+Sjanger VARCHAR (30),
+Medium VARCHAR (15),
+CONSTRAINT FilmPK PRIMARY KEY (Tittel)
+);
+
+CREATE TABLE Magasin (
+ISBN CHAR (13),
+Tittel VARCHAR (50),
+Nr CHAR (2),
+Årgang YEAR,
+CONSTRAINT MagasinPK PRIMARY KEY (ISBN, Nr, Årgang)
+);
+
+CREATE TABLE Fag (
+Fagkode CHAR(8),
+Fagnavn CHAR(50),
+Karakter CHAR(1),
+Studiepoeng DECIMAL(3,1),
+CONSTRAINT FagPK PRIMARY KEY (Fagkode)
+);
+
+CREATE TABLE Semestertabell (
+Semester CHAR(1),
+År CHAR(5),
+CONSTRAINT SemestertabellPK PRIMARY KEY (Semester)
+);
+
+CREATE TABLE LestBok (
+ISBN CHAR(13),
+Påbegynt DATE,
+Ferdig DATE,
+CONSTRAINT LestBokPK PRIMARY KEY (ISBN, Påbegynt),
+CONSTRAINT LestBokBokFK FOREIGN KEY (ISBN) REFERENCES Bok(ISBN)
+);
+
+CREATE TABLE Skolebok_HSN (
+ISBN CHAR(13),
+Fagkode CHAR(8),
+Semester CHAR(1),
+CONSTRAINT SkolebokPK PRIMARY KEY (ISBN, Fagkode),
+CONSTRAINT SkolebokBokFK FOREIGN KEY (ISBN) REFERENCES Bok(ISBN),
+CONSTRAINT SkolebokFagFK FOREIGN KEY (Fagkode) REFERENCES Fag(Fagkode),
+CONSTRAINT SkolebokSemestertabellFK FOREIGN KEY (Semester) REFERENCES Semestertabell(Semester)
+);
