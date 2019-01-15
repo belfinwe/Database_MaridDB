@@ -1,14 +1,16 @@
-DROP SCHEMA IF EXISTS mediatek;
+DROP SCHEMA IF EXSIST mediatek;
 CREATE SCHEMA mediatek;
 USE mediatek;
 
-DROP TABLE IF EXISTS Bok;
-DROP TABLE IF EXISTS Film;
-DROP TABLE IF EXISTS Magasin;
-DROP TABLE IF EXISTS Fag;
-DROP TABLE IF EXISTS Semestertabell;
-DROP TABLE IF EXISTS LestBok;
-DROP TABLE IF EXISTS Skolebok_HSN;
+DROP TABLE IF EXSIST Bok;
+DROP TABLE IF EXSIST Film;
+DROP TABLE IF EXSIST Magasin;
+DROP TABLE IF EXSIST Fag;
+DROP TABLE IF EXSIST Semestertabell;
+DROP TABLE IF EXSIST LestBok;
+DROP TABLE IF EXSIST Skolebok_HSN;
+DROP TABLE IF EXSIST Karakterlogg;
+DROP TABLE IF EXSIST Handleliste;
 
 CREATE TABLE Bok (
 ISBN CHAR (13),
@@ -68,4 +70,23 @@ CONSTRAINT SkolebokPK PRIMARY KEY (ISBN, Fagkode),
 CONSTRAINT SkolebokBokFK FOREIGN KEY (ISBN) REFERENCES Bok(ISBN),
 CONSTRAINT SkolebokFagFK FOREIGN KEY (Fagkode) REFERENCES Fag(Fagkode),
 CONSTRAINT SkolebokSemestertabellFK FOREIGN KEY (Semester) REFERENCES Semestertabell(Semester)
+);
+
+CREATE TABLE Karakterlogg (
+Dato TIMESTAMP,
+Fagkode CHAR(8),
+OldKarakter CHAR(1),
+NewKarakter CHAR(1),
+CONSTRAINT KarakterloggPK PRIMARY KEY (Dato, Fagkode),
+CONSTRAINT KarakterloggFagFK FOREIGN KEY (Fagkode) REFERENCES Fag(Fagkode)
+);
+
+-- Forslag til ny tabeller til mediateket
+
+CREATE TABLE Handleliste (
+Tittel VARCHAR(100),
+Av VARCHAR(100),
+Typen VARCHAR(15)
+Handlet TINYINT
+CONTRAINT HandlelistePK PRIMARY KEY (Tittel, Typen)
 );
